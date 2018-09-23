@@ -25,7 +25,10 @@ class Header extends PureComponent {
   }
 
   handleChange (prop) {
-    return e => this.setState({[prop]: e.target.value})
+    return e => {
+      const value = parseInt(e.target.value, 10)
+      if (!Number.isNaN(value)) this.setState({[prop]: value})
+    }
   }
 
   handleSubmit () {
