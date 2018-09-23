@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {createSelector} from 'reselect'
 
 import {NORTH, SOUTH, EAST, WEST} from '../lib/maze'
-import {container} from '../../less/container'
+import {container, version} from '../../less/container'
 import Header from './Header'
 import Maze from './Maze'
 import Cursor from './Cursor'
@@ -77,6 +77,9 @@ class Container extends Component {
         <End />
         <Path />
         <Fireworks active={this.props.won} />
+        <span className={cx(version)}>
+          {process.env.version}
+        </span>
       </div>
     )
   }
