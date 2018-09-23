@@ -26,7 +26,7 @@ export default ({rows, cols, ...rest}) => {
   const randX = parseInt(Math.random() * cols)
   const randY = parseInt(Math.random() * rows)
   switch (1 <<  Math.random() * 4) {
-    case NORTH: y = 0; y = randX; break
+    case NORTH: y = 0; x = randX; break
     case SOUTH: y = rows - 1; x = randX; break
     case EAST: x = cols - 1; y = randY; break
     case WEST: x = 0; y = randY; break
