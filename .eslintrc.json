@@ -20,9 +20,13 @@
     "react"
   ],
   "rules": {
+    "no-extra-parens": [
+      "error"
+    ],
     "indent": [
       "error",
-      2
+      2,
+      {"SwitchCase": 1}
     ],
     "linebreak-style": [
       "error",
@@ -36,5 +40,6 @@
       "error",
       "never"
     ]
-  }
+  },
+  "parser": "babel-eslint"
 }

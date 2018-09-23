@@ -7,13 +7,8 @@ export default state => {
 
   const middleware = []
 
-  const logger = createLogger({
-    diff: true,
-    aggregate: typeof window === 'undefined'
-  })
-
   if (process.env.NODE_ENV !== 'production' || typeof window === 'undefined') {
-    middleware.push(logger)
+    middleware.push(createLogger())
   }
 
   return createStore(

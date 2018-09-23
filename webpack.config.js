@@ -2,9 +2,9 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-//const OfflinePlugin = require('offline-plugin')
+const OfflinePlugin = require('offline-plugin')
 const packageJson = require('./package.json')
 
 module.exports = (env, argv) => {
@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
           '@babel/plugin-proposal-object-rest-spread'
         ],
         presets: [
-          '@babel/preset-env',
+          ['@babel/preset-env', {targets: '> 1%, not dead, not ie < 13'}],
           '@babel/preset-react'
         ],
         sourceMap: true,
@@ -73,18 +73,18 @@ module.exports = (env, argv) => {
       }
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
-    })
-    // new OfflinePlugin({
-    //   ServiceWorker: {
-    //     minify: argv.mode === 'production',
-    //     events: true
-    //   }
-    // }),
+      filename: `[name]${chunkhash}.css`,
+      chunkFilename: `[id]${chunkhash}.css`
+    }),
+    new OfflinePlugin({
+      ServiceWorker: {
+        minify: argv.mode === 'production',
+        events: true
+      }
+    }),
   ]
 
-  return ({
+  return {
     name: 'maze',
     devtool: argv.mode === 'production'
       ? 'hidden-source-map'
@@ -102,7 +102,7 @@ module.exports = (env, argv) => {
         chunks: 'all'
       },
       minimizer: [
-        new UglifyJSPlugin(),
+        new TerserPlugin(),
         new OptimizeCSSAssetsPlugin({})
       ]
     },
@@ -120,5 +120,5 @@ module.exports = (env, argv) => {
       rules
     },
     plugins
-  })
+  }
 }
