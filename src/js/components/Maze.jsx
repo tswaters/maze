@@ -58,7 +58,7 @@ class Maze extends Component {
   }
 }
 
-const mapDispatchToProps = createSelector([
+const mapStateToProps = createSelector([
   state => state.maze,
   state => state.stats
 ], (
@@ -69,4 +69,4 @@ const mapDispatchToProps = createSelector([
   stats
 }))
 
-export default connect(mapDispatchToProps)(Maze)
+export default connect(mapStateToProps)(Maze)

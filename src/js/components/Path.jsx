@@ -64,7 +64,7 @@ class Path extends Component {
   }
 }
 
-const mapDispatchToProps = createSelector([
+const mapStateToProps = createSelector([
   state => state.path,
   state => state.start,
   state => state.stats
@@ -78,4 +78,4 @@ const mapDispatchToProps = createSelector([
   stats
 }))
 
-export default connect(mapDispatchToProps)(Path)
+export default connect(mapStateToProps)(Path)

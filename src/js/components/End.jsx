@@ -53,7 +53,7 @@ class End extends Component {
   }
 }
 
-const mapDispatchToProps = createSelector([
+const mapStateToProps = createSelector([
   state => state.end,
   state => state.stats
 ], (
@@ -64,4 +64,4 @@ const mapDispatchToProps = createSelector([
   stats
 }))
 
-export default connect(mapDispatchToProps)(End)
+export default connect(mapStateToProps)(End)

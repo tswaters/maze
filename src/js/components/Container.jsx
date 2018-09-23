@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import {connect} from 'react-redux'
+import {createSelector} from 'reselect'
 
 import {NORTH, SOUTH, EAST, WEST} from '../lib/maze'
 import {container} from '../../less/container'
@@ -11,6 +12,7 @@ import Maze from './Maze'
 import Cursor from './Cursor'
 import Path from './Path'
 import End from './End'
+import Fireworks from './Fireworks'
 
 class Container extends Component {
 
@@ -19,7 +21,8 @@ class Container extends Component {
     moveUp: PropTypes.func.isRequired,
     moveDown: PropTypes.func.isRequired,
     moveLeft: PropTypes.func.isRequired,
-    moveRight: PropTypes.func.isRequired
+    moveRight: PropTypes.func.isRequired,
+    won: PropTypes.bool.isRequired
   }
 
   constructor (props) {
@@ -35,6 +38,14 @@ class Container extends Component {
     this.attached = true
   }
 
+  componentDidUpdate () {
+    if (this.props.won) {
+      document.removeEventListener('keydown', this.handleDocumentKeyDown)
+      this.attached = false
+    } else if (this.attached === false) {
+      document.addEventListener('keydown', this.handleDocumentKeyDown)
+    }
+  }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize)
@@ -65,10 +76,21 @@ class Container extends Component {
         <Cursor />
         <End />
         <Path />
+        <Fireworks active={this.props.won} />
       </div>
     )
   }
 }
+
+const mapStateToProps = createSelector([
+  state => state.cursor,
+  state => state.end
+], (
+  cursor,
+  end
+) => ({
+  won: cursor.x === end.x && cursor.y === end.y
+}))
 
 const mapDispatchToProps = dispatch => ({
   resize: ({width, height}) => dispatch({type: 'resize', width, height}),
@@ -78,4 +100,4 @@ const mapDispatchToProps = dispatch => ({
   moveRight: () => dispatch({type: 'move', direction: EAST})
 })
 
-export default connect(null, mapDispatchToProps)(Container)
+export default connect(mapStateToProps, mapDispatchToProps)(Container)

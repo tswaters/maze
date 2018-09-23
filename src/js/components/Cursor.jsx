@@ -6,7 +6,6 @@ import {connect} from 'react-redux'
 import {createSelector} from 'reselect'
 
 import {canvas} from '../../less/canvas'
-import Fireworks from './Fireworks'
 
 class Cursor extends Component {
 
@@ -54,14 +53,11 @@ class Cursor extends Component {
   }
 
   render () {
-    return [
-      this.props.won && <Fireworks key="fireworks" active={this.props.won} />,
-      <canvas key="canvas" className={cx(canvas)} ref={_ref => this.canvas = _ref} />
-    ]
+    return <canvas key="canvas" className={cx(canvas)} ref={_ref => this.canvas = _ref} />
   }
 }
 
-const mapDispatchToProps = createSelector([
+const mapStateToProps = createSelector([
   state => state.cursor,
   state => state.stats,
   state => state.end
@@ -75,4 +71,4 @@ const mapDispatchToProps = createSelector([
   won: cursor.x === end.x && cursor.y === end.y
 }))
 
-export default connect(mapDispatchToProps)(Cursor)
+export default connect(mapStateToProps)(Cursor)

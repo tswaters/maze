@@ -19,19 +19,21 @@ class FireworksComponent extends PureComponent {
 
   componentDidMount () {
     this.fireworks = new Fireworks(this.container, {explosionChance: 0.02})
-    document.addEventListener('keydown', this.handleDocumentKeyDown)
-    this.fireworks.start()
   }
 
   componentDidUpdate () {
     if (this.props.active) {
+      document.addEventListener('keydown', this.handleDocumentKeyDown)
       this.fireworks.start()
+    } else {
+      document.removeEventListener('keydown', this.handleDocumentKeyDown)
+      this.fireworks.kill()
     }
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleDocumentKeyDown)
-    this.fireworks.stop()
+    this.fireworks.kill()
   }
 
   handleDocumentKeyDown (ev) {
