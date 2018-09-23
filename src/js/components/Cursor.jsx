@@ -6,11 +6,13 @@ import {connect} from 'react-redux'
 import {createSelector} from 'reselect'
 
 import {canvas} from '../../less/canvas'
+import Fireworks from './Fireworks'
 
 class Cursor extends Component {
 
   static propTypes = {
-    cursor: PropTypes.object,
+    cursor: PropTypes.object.isRequired,
+    won: PropTypes.bool.isRequired,
     stats: PropTypes.shape({
       width: PropTypes.number.isRequired,
       height: PropTypes.number.isRequired,
@@ -39,6 +41,9 @@ class Cursor extends Component {
     const {cursor, stats: {width, height, padding, windowWidth, windowHeight, offsetX, offsetY}} = this.props
     this.canvas.width = windowWidth + padding
     this.canvas.height = windowHeight + padding
+
+    if (this.props.won) { return }
+
     const ctx = this.canvas.getContext('2d')
     const xpos = cursor.x * width + offsetX + width / 2
     const ypos = cursor.y * height + offsetY + height / 2
@@ -49,19 +54,25 @@ class Cursor extends Component {
   }
 
   render () {
-    return <canvas className={cx(canvas)} ref={_ref => this.canvas = _ref} />
+    return [
+      this.props.won && <Fireworks key="fireworks" active={this.props.won} />,
+      <canvas key="canvas" className={cx(canvas)} ref={_ref => this.canvas = _ref} />
+    ]
   }
 }
 
 const mapDispatchToProps = createSelector([
   state => state.cursor,
-  state => state.stats
+  state => state.stats,
+  state => state.end
 ], (
   cursor,
-  stats
+  stats,
+  end
 ) => ({
   cursor,
-  stats
+  stats,
+  won: cursor.x === end.x && cursor.y === end.y
 }))
 
 export default connect(mapDispatchToProps)(Cursor)

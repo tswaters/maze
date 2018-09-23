@@ -1,6 +1,6 @@
 {
   "name": "maze",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple maze application",
   "scripts": {
     "prebuild": "rimraf dist",
@@ -44,6 +44,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "classnames": "^2.2.6",
+    "fireworks-canvas": "^2.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
