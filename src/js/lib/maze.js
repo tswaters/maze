@@ -37,16 +37,12 @@ export default ({rows, cols, ...rest}) => {
   start.distance = 0
   start.parent = start
 
+  let end = start
   let last = null
 
   while (last != start) {
     last = link(last || start)
   }
-
-  // figure out the node with the largest distance - that is the end
-  const end =  Object.entries(nodes)
-    .reduce((memo, [, value]) => [...memo, value], [])
-    .sort((a, b) => a.distance < b.distance ? 1 : a.distance > b.distance ? -1 : 0)[0]
 
   // remove things we don't need
   for (const [, value] of Object.entries(nodes)) {
@@ -110,6 +106,9 @@ export default ({rows, cols, ...rest}) => {
         node.walls &= ~dir
         dest.walls &= ~flipped
         dest.distance = node.distance + 1
+        if (dest.distance > end.distance) {
+          end = dest
+        }
         return dest
 
       }
