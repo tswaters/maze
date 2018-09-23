@@ -24,32 +24,37 @@ class Container extends Component {
 
   constructor (props) {
     super(props)
-    this.move_handler = null
+    this.attached = false
+    this.handleWindowResize = this.handleWindowResize.bind(this)
+    this.handleDocumentKeyDown = this.handleDocumentKeyDown.bind(this)
   }
 
   componentDidMount () {
-
-    this.resize_handler = window.addEventListener('resize', () => {
-      this.props.resize({
-        windowWidth: window.innerWidth,
-        windowHeight: window.innerHeight
-      })
-    })
-
-    this.move_handler = document.addEventListener('keydown', ev => {
-      switch (ev.keyCode) {
-        case 38: case 87: return this.props.moveUp()
-        case 40: case 83: return this.props.moveDown()
-        case 37: case 65: return this.props.moveLeft()
-        case 39: case 68: return this.props.moveRight()
-      }
-    })
-
+    window.addEventListener('resize', this.handleWindowResize)
+    document.addEventListener('keydown', this.handleDocumentKeyDown)
+    this.attached = true
   }
 
+
   componentWillUnmount() {
-    window.removeEventListener(this.resize_handler)
-    document.removeEventListener(this.move_handler)
+    window.removeEventListener('resize', this.handleWindowResize)
+    document.removeEventListener('keydown', this.handleDocumentKeyDown)
+  }
+
+  handleDocumentKeyDown (ev) {
+    switch (ev.keyCode) {
+      case 38: case 87: return this.props.moveUp()
+      case 40: case 83: return this.props.moveDown()
+      case 37: case 65: return this.props.moveLeft()
+      case 39: case 68: return this.props.moveRight()
+    }
+  }
+
+  handleWindowResize () {
+    this.props.resize({
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
+    })
   }
 
   render () {

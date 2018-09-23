@@ -14,14 +14,12 @@ class FireworksComponent extends PureComponent {
 
   constructor (props) {
     super(props)
-    this.listener = null
+    this.handleDocumentKeyDown = this.handleDocumentKeyDown.bind(this)
   }
 
   componentDidMount () {
     this.fireworks = new Fireworks(this.container, {explosionChance: 0.02})
-    this.listener = document.addEventListener('keydown', ev => {
-      if (ev.keyCode === 27) { this.fireworks.stop() }
-    })
+    document.addEventListener('keydown', this.handleDocumentKeyDown)
     this.fireworks.start()
   }
 
@@ -31,9 +29,13 @@ class FireworksComponent extends PureComponent {
     }
   }
 
-  componentWillUnmount () {
-    document.removeEventListener('keydown', this.listener)
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleDocumentKeyDown)
     this.fireworks.stop()
+  }
+
+  handleDocumentKeyDown (ev) {
+    if (ev.keyCode === 27) { this.fireworks.stop() }
   }
 
   render () {
