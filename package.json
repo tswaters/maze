@@ -1,6 +1,6 @@
 {
   "name": "maze",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple maze application",
   "scripts": {
     "prebuild": "rimraf dist",
