@@ -44,12 +44,13 @@ module.exports = (env, argv) => {
       loader: 'css-loader',
       options: {
         sourceMap: true,
-        modules: true,
-        camelCase: true,
+        modules: {
+          localIdentName: argv.mode === 'production'
+            ? '[hash:base64:5]'
+            : '[path][name]__[local]--[hash:base64:5]'
+        },
+        localsConvention: 'camelCase',
         importLoaders: 1,
-        localIdentName: argv.mode === 'production'
-          ? '[hash:base64:5]'
-          : '[path][name]__[local]--[hash:base64:5]'
       }
     }, {
       loader: 'less-loader',
